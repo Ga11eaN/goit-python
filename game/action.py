@@ -61,9 +61,7 @@ def top_scores():
 
     d.sort(reverse = True)
 
-    deq = collections.deque(d, maxlen = 10)
-
-    for item in deq:
+    for item in d[:10]:
         mes = "{:*<12}{:*>8}".format(item[1], str(item[0]))
         print(mes)
 
