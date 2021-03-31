@@ -1,8 +1,11 @@
 from collections import UserDict, UserList, UserString
 from datetime import datetime
+import pickle
 
 class Field():
-    __value = ''
+
+    def __init__(self):
+        self.__value = ''
     
     @property
     def value(self):
@@ -31,14 +34,12 @@ class Phone(UserList, Field):
 
 class AddressBook(UserDict, Field):
 
-    n = 2
-    offset = 0
-    birthday = {}
-    
-    def add_record(self, record):
-        self.data[record.name] = record.phone
-        self.birthday[record.name] = record.birthday
-        
+    def __init__(self):
+        self.n = 2
+        self.offset = 0
+        self.birthday = {}
+        self.data = {}
+           
     def __next__(self):
         key_list = list(self.data)
         end_value = self.offset + self.n
@@ -54,8 +55,46 @@ class AddressBook(UserDict, Field):
         return page
         
     def __iter__(self):
-        return self    
+        return self
         
+    def __getstate__(self):
+        att = self.__dict__.copy()
+        return att
+        
+    def __setstate__(self, value):
+        self.__dict__ = value
+        self.data = value['data']
+        self.birthday = value['birthday']
+        
+    def add_record(self, record):
+        self.data[record.name] = record.phone
+        self.birthday[record.name] = record.birthday
+
+    def find(self, find_value):
+        finded_names = ''
+        
+        for key, value in self.data.items():
+            if find_value in key:
+                finded_names += f'{key} ({self.birthday[key]}) : {self.data[key]}\n'
+                continue
+            for i in value:
+                if find_value in i:
+                    finded_names += f'{key} ({self.birthday[key]}) : {self.data[key]}\n'
+                    break
+                
+        if not finded_names:
+            print('No value {find_value} found')
+        else:
+            print(finded_names)
+            
+    def save(self):
+        with open('add_book.txt', 'wb') as file:
+            pickle.dump(self, file)
+            
+    def load(self):
+        with open('add_book.txt', 'rb') as file:
+            unpack = pickle.load(file)        
+        return unpack
         
 class Birthday(UserString):
     
@@ -81,7 +120,7 @@ class Birthday(UserString):
             print('Birthday input is not correct. Should be in format: DD/MM/YYYY')
     
 class Record(Field):
-    def __init__(self, user_name, birthday = 0):
+    def __init__(self, user_name, birthday = ''):
         self.name = Name(user_name)
         self.birthday = Birthday(birthday)
         self.phone = Phone()
@@ -114,3 +153,32 @@ class Record(Field):
             delta = ((delta1 if delta1 > now else delta2) - now).days
             
             return delta
+            
+'''
+a = Record('Ivan', birthday = '25/03/1993')
+a.add_phone('0936792731')
+a.add_phone('0674718277')
+
+b = Record('Andriy')
+b.add_phone('0936792731')
+b.add_phone('0674718277')
+
+c = Record('Senya', birthday ='23/08/4234')
+c.add_phone('0674718277')
+
+add_book = AddressBook()
+add_book.add_record(a)
+add_book.add_record(b)
+add_book.add_record(c)
+
+#print(a.days_to_birthday())
+#for i in add_book:
+    #print(i)
+
+add_book.find('093')
+add_book.save()
+
+new_book = AddressBook()
+new_book = new_book.load()
+print(new_book.data, new_book.birthday)
+'''
