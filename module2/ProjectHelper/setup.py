@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(name='personal_assistant',
-                 version='0.0.1',
+                 version='1.0.1',
                  author='Yaroslav Maniukh, Valeriy Topchiy, Polina Yarova',
                  author_email='manyukhy@gmail.com, wellkswell@gmail.com, polinaya777@gmail.com',
                  description='Console script for working with Contacts lists, Notes and sorting files in the folders',

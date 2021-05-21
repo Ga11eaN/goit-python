@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from collections import UserDict, UserString, UserList
 from datetime import datetime, timedelta
 from re import fullmatch
