@@ -1,6 +1,6 @@
-import ProjectHelper.contacts_list
-import ProjectHelper.sort_files
-import ProjectHelper.mynote
+import contacts_list
+import sort_files
+import mynote
 from datetime import datetime
 
 def log(action):

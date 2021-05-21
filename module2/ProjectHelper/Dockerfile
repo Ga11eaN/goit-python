@@ -1,15 +1,8 @@
 FROM python:3
-
-ADD setup.py /
-
-ADD README.md /
-
-ADD MANIFEST.in /
-
-ADD LICENSE /
-
-ADD ProjectHelper /
-
-RUN pip install -e .
-
-CMD ["python3", "helper-folder"]
+WORKDIR app
+RUN pip install pipenv
+COPY Pipfile Pipfile
+COPY Pipfile.lock Pipfile.lock
+RUN pipenv install
+COPY . .
+CMD python main.py
