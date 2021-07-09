@@ -2,7 +2,7 @@ import contacts_list
 from pymongo import MongoClient
 
 client = MongoClient(
-    "mongodb+srv://Byuko:35715946@cluster0.wo3h0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+    "mongodb+srv://Byuko:<password>@cluster0.wo3h0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 )
 
 db = client.Contacts
