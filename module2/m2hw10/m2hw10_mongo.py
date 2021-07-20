@@ -37,10 +37,10 @@ test_cl = contacts_list.ContactList('new_cl')
 
 for i in range(3):
     test_record = contacts_list.Record(name = 'Ivan'+str(i),
-                                       phone = ['+3809367441'+str(i)],
-                                       address = ['Kyiv, Mazepy 2'+str(i)],
-                                       mail = ['IvanCelofan' + str(i) + '@gmail.com'],
-                                       birthday = contacts_list.Birthday('1' + str(i) + '.01.2000'))
+       phone = ['+3809367441'+str(i)],
+       address = ['Kyiv, Mazepy 2'+str(i)],
+       mail = ['IvanCelofan' + str(i) + '@gmail.com'],
+       birthday = contacts_list.Birthday('1' + str(i) + '.01.2000'))
     test_cl.add_contact(test_record)
 
 test_cl.print_contact_list()
