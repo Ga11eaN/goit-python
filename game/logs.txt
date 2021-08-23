@@ -1,0 +1,24 @@
+[19:26:21] Generating map...
+[19:26:21] Map has been generated
+[19:26:21] Generating world...
+[19:26:21] World has been generated
+[19:26:34] Loading game...
+[19:26:34] Game has been loaded
+[19:26:39] Loading game...
+[19:26:39] Game has been loaded
+[19:26:40] Loading game...
+[19:26:40] Game has been loaded
+[19:26:42] Wrong action! Use help(h) to see available options
+[19:26:58] Generating map...
+[19:26:58] Map has been generated
+[19:26:58] Generating world...
+[19:26:58] World has been generated
+[19:27:00] Wrong action! Use help(h) to see available options
+[19:27:08] Moving l from position (7, 9)
+[19:27:08] New position (7, 8)
+[19:27:14] Moving d from position (7, 8)
+[19:27:14] New position (8, 8)
+[19:27:16] Moving d from position (8, 8)
+[19:27:16] New position (9, 8)
+[19:27:18] Moving r from position (9, 8)
+[19:27:18] You found the Holy Grail which values:968 gold. Total gold: 968.

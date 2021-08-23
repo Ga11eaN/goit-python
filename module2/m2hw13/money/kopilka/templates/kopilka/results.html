@@ -1,0 +1,26 @@
+{% load summ_filter %}
+{% if date_objects %}
+	<table>
+	<tr>
+	  <th>Earnings</th>
+	  <th>Date</th>
+	  <th>Note</th>
+	  <th>Category</th>
+	  <th>Sum</th>
+	</tr>
+	{% for money in date_objects %}
+	<tr>
+	  <td> {{ money.earnings }}</td>
+	  <td> {{ money.pub_date|date:'d.m.Y H:i' }}</td>
+	  <td> {{ money.note_text }}</td>
+	  <td> {{ money.category }}</td>
+	  <td> {{ summ|get_item:money.id }}</td>
+	</tr> 
+	{% endfor %}
+	</table>
+{% else %}
+	<p>No result available</p>
+{% endif %}
+
+
+<a href = "/kopilka">Main menu</a>
