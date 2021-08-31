@@ -1,0 +1,20 @@
+[
+	{
+		"model" : "xiaomi.phone",
+		"pk" : 1,
+		"fields": {
+			"name" : "Redmi json",
+			"price" : "1000 hrv",
+			"link" : "ex.ua"
+			}
+	},
+	{
+		"model" : "xiaomi.phone",
+		"pk" : 2,
+		"fields": {
+			"name" : "Redmi json2",
+			"price" : "2000 hrv",
+			"link" : "ex2.ua"
+			}
+	}
+]
