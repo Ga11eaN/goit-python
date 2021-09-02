@@ -1,3 +1,4 @@
+'''module for contact lists'''
 from abc import ABC, abstractmethod
 from collections import UserDict, UserString, UserList
 from datetime import datetime, timedelta
@@ -9,57 +10,68 @@ from unittest.mock import patch
 
 
 class BasePrint(ABC):
+    '''class for implementing methods'''
     @abstractmethod
     def print_contact_list(self):
+        '''func for implementing method'''
         pass
 
 class ContactList(UserDict, BasePrint):
+    '''class for contact list'''
 
     def __init__(self, name='new_contact_list'):
+        '''func for init contact list'''
         self.name = name
         self.data = {}
 
     def add_contact(self, record):
+        '''func for add contact'''
         self.data[record.name] = record
 
     #find value in ContactList
     def find(self, find_value):
-
+        '''func for finding vlaue in contact list'''
         finded_names = []
-        
+
         for key, value in self.data.items():
             if find_value in key:
                 finded_names.append(key)
                 continue
-            
+
             search_values = value['address'] + value['phone'] + value['mail'] + [value['birthday']]
 
             for i in search_values:
                 if find_value in i:
                     finded_names.append(key)
                     break
-                
+
         if not finded_names:
             print(f'No value {find_value} found')
             return False
         else:
             print('Finded values in:')
-            counter = 0        
+            counter = 0
             print(' {:_^105}'.format(''))
-            print("|{:<10}|{:^27}|{:^27}|{:^27}|{:>10}|".format('name','phone','address','mail','birthday'))
+            print("|{:<10}|{:^27}|{:^27}|{:^27}|{:>10}|".
+                format('name','phone','address','mail','birthday'))
             print(' {:‾^105}'.format(''))
             for i in finded_names:
-                print("|{:<10}|{:^27}|{:^27}|{:^27}|{:>10}|".format(i[:10],('/ '.join(self.data[i]['phone']))[:27],('/ '.join(self.data[i]['address']))[:27],('/ '.join(self.data[i]['mail']))[:27],self.data[i]['birthday'].data))
+                print("|{:<10}|{:^27}|{:^27}|{:^27}|{:>10}|".format(i[:10],
+                    ('/ '.join(self.data[i]['phone']))[:27],
+                    ('/ '.join(self.data[i]['address']))[:27],
+                    ('/ '.join(self.data[i]['mail']))[:27],
+                    self.data[i]['birthday'].data))
                 counter += 1
                 if not counter % 10:
                     print(' {:‾^105}'.format(''))
                     input('Press any key to continue')
                     print(' {:_^105}'.format(''))
-            print(' {:‾^105}'.format('')) 
+            print(' {:‾^105}'.format(''))
             return True
 
     #change name in ContactList
     def change_name(self):
+        '''func for changing contact name'''
         while True:
             user_input = input('Please enter name to rename/delete: ')
             if user_input not in self.data.keys():
@@ -77,11 +89,9 @@ class ContactList(UserDict, BasePrint):
                     self.data.pop(user_input)
                 break
 
-            
-       
     #calculate contacts with birthdays from days_from to days_to
     def birthdays(self, days_from, days_to):
-
+        '''func for init contact list'''
         try:
             days_from = int(days_from)
             days_to = int(days_to)
@@ -135,6 +145,7 @@ class ContactList(UserDict, BasePrint):
 
     #save contact list
     def save_csv(self):
+        '''func for saving contact list to csv'''
         user_input = self.name
         with open(f'{user_input}.csv', 'w', newline='') as file:
             field_names = ['name', 'phone', 'address', 'mail', 'birthday']
@@ -152,6 +163,7 @@ class ContactList(UserDict, BasePrint):
                 writer.writerow(dict_to_write)
 
     def load(self):
+        '''func for loading contact list'''
         user_input = input('Enter the name of your Contact List: ')
         self.name = user_input
         try:
@@ -166,12 +178,17 @@ class ContactList(UserDict, BasePrint):
             print('File is not exist.')
 
     def print_contact_list(self):
+        '''func for printing contact list'''
         print(f'Contact list: {self.name}')
         print(' {:_^105}'.format(''))
         counter = 0
         
         for i in self.data:
-            print("|{:<10}|{:^27}|{:^27}|{:^27}|{:>10}|".format(i[:10],('/ '.join(self.data[i]['phone']))[:27],('/ '.join(self.data[i]['address']))[:27],('/ '.join(self.data[i]['mail']))[:27],self.data[i]['birthday'].data))
+            print("|{:<10}|{:^27}|{:^27}|{:^27}|{:>10}|".format(i[:10],
+                ('/ '.join(self.data[i]['phone']))[:27],
+                ('/ '.join(self.data[i]['address']))[:27],
+                ('/ '.join(self.data[i]['mail']))[:27],
+                self.data[i]['birthday'].data))
             counter += 1
             if not counter % 10:
                 print(' {:‾^105}'.format(''))
@@ -181,14 +198,15 @@ class ContactList(UserDict, BasePrint):
         print(' {:‾^105}'.format('')) 
 
 class Birthday(UserString):
-    
+    '''class for birthday data'''
     @property
     def data(self):
+        '''birthday getter'''
         return self.__data
-        
+
     @data.setter
     def data(self, new_value):
-        
+        '''birthday setter'''
         try:
             self.year = int(new_value[6:])
             self.month = int(new_value[3:5])
@@ -199,11 +217,13 @@ class Birthday(UserString):
             self.__data = ''
             if new_value:
                 print(f'Birthday input is not correct. Should be in format: DD.MM.YYYY')
-    
+
 class Record(UserDict):
-    
+    '''class for records in contact list'''
+
     #creating Record dict with all values
     def __init__(self, name = '', phone = '', address = '', mail = '', birthday = 'no_data'):
+        '''func for init record'''
         self.data = {}
         if not name:
             self.add_name()
@@ -229,27 +249,28 @@ class Record(UserDict):
             self.add_birthday()
         else:
             self.data['birthday'] = birthday
-        
+
     #adding name attribute to the Record
     def add_name(self):
+        '''func for adding namr to the record'''
         user_input = input('Enter contact name please: ')
         self.name = user_input
-            
     
     #adding phone, mail and address to the Record
     def add_value(self, value):
+        '''func for adding value(mail,address,phone and birthday) to record'''
         while True:
-           
+
             user_input = input(f"Enter the {value} please (If you don't want to enter {value}, leave empty): ")
-                    
+
             if value == 'phone':
                 if not self.__phone_check(user_input):
                     continue
-            
+
             if value == 'mail':
                 if not self.__mail_check(user_input):
                     continue
-            
+
             if value not in self.data.keys():
                 self[value] = [user_input]
             else:
@@ -259,46 +280,49 @@ class Record(UserDict):
                 add_more = 'no'
             else:
                 add_more = input(f'Do you want to enter another {value}? (yes|no): ')
-                
+
             if add_more == 'yes':
                 continue
             else:
                 break
-    
+
     #phone check
     def __phone_check(self, phone):
+        '''func for checking phone input in the record'''
 
-        PHONE_CHECK = '[+]?380(93|67|63|50|95|66|97|68|73|96|98|99)\d{7}'
+        PHONE_CHECK = r'[+]?380(93|67|63|50|95|66|97|68|73|96|98|99)\d{7}'
 
         if fullmatch(PHONE_CHECK, phone) or not phone:
             return True
         else:
             print('Phone number is not correct. Should start from +380 or 380, have correct operator number and 12 digits')
             return False
-    
+
     #mail check
     def __mail_check(self, mail):
+        '''func for checking mail input in the record'''
 
-        MAIL_CHECK = '[a-zA-Z0-9_]{2,15}[@][a-z]{1,10}\.[a-z]{2,4}'
+        MAIL_CHECK = r'[a-zA-Z0-9_]{2,15}[@][a-z]{1,10}\.[a-z]{2,4}'
 
         if fullmatch(MAIL_CHECK, mail) or not mail:
             return True
         else:
             print('Mail is not correct.')
             return False
-    
+
     #birthday adding
     def add_birthday(self):
+        '''func for birthday input in the record'''
         while True:
-           
             user_input = input('Enter the birthday please in format "DD.MM.YYYY"(If you do not want to enter birthday, leave empty): ')
             self.data['birthday'] = Birthday(user_input)
-            
+
             if self.data['birthday'] or not user_input:
                 break
-    
+
     #change any value in Record except name
     def change_value(self):
+        '''func for changing value(mail,address,phone and birthday) to record'''
         
         CORRECT_INPUT = ('1', 'phone', '2', 'address', '3', 'mail', '4', 'birthday','5','back')
 
@@ -336,7 +360,7 @@ class Record(UserDict):
                 if value == 'phone':
                     if not self.__phone_check(data_input):
                         continue
-            
+
                 if value == 'mail':
                     if not self.__mail_check(data_input):
                         continue
@@ -347,18 +371,22 @@ class Record(UserDict):
                 break
 
 class TestRecord(unittest.TestCase):
+    '''test class'''
 
     def setUp(self):
+        '''test func'''
         self.record1 = Record(name = 'name', phone = ['+380931112233'], address = ['add'], mail = ['ex@mail'], birthday = Birthday('02.09.2000'))
         self.record2 = Record(name = 'name2', phone = ['+380931112233', '380671111111'], address = ['add2'], mail = ['ex2@mail', 'sss@sadasd@mail.gg'], birthday = Birthday('03.09.2000'))
         
     def test_phone_check(self):
+        '''test func'''
         self.assertTrue(self.record1._Record__phone_check('+380931112233'))
         self.assertFalse(self.record1._Record__phone_check('+3809311123'))
         self.assertFalse(self.record1._Record__phone_check('asdsad'))
         self.assertTrue(self.record1._Record__phone_check('380931112233'))
         
     def test_mail_check(self):
+        '''test func'''
         self.assertTrue(self.record1._Record__mail_check('asdsfsadfasd@gmail.com'))
         self.assertFalse(self.record1._Record__mail_check('asdsfsadfasdgmail.com'))
         self.assertFalse(self.record1._Record__mail_check('asdsfsadfasd@gmailasdsdsafsaf.com'))
@@ -366,11 +394,13 @@ class TestRecord(unittest.TestCase):
 
     @patch('builtins.input', return_value = '25.01.2001')
     def test_add_birthday(self, mock_input):
+        '''test func'''
         self.record1.add_birthday()
         self.assertEqual(self.record1.data['birthday'], '25.01.2001')
         
     @patch('builtins.input', side_effect = ['1', '1', '380671234567'])
     def test_change_phone(self, mock_input):
+        '''test func'''
         self.record2.change_value()
         self.assertEqual(self.record2.data['phone'][0], '380671234567')
 
@@ -381,22 +411,27 @@ class TestRecord(unittest.TestCase):
         
     @patch('builtins.input', return_value = '380671234567')
     def test_add_phone(self, mock_input):
+        '''test func'''
         self.record1.add_value('phone')
         self.assertEqual(self.record1.data['phone'][1], '380671234567')
         
     @patch('builtins.input', return_value = 'abcd@zz.net')
     def test_add_mail(self, mock_input):
+        '''test func'''
         self.record1.add_value('mail')
         self.assertEqual(self.record1.data['mail'][1], 'abcd@zz.net')
         
     @patch('builtins.input', return_value = 'Kaban')
     def test_add_name(self, mock_input):
+        '''test func'''
         self.record1.add_name()
         self.assertEqual(self.record1.name, 'Kaban')
         
 class TestContactList(unittest.TestCase):
+    '''test class'''
     
     def setUp(self):
+        '''test func'''
         self.record1 = Record(name = 'name', phone = ['+380931112233'], address = ['add'], mail = ['ex@mail'], birthday = Birthday('02.09.2000'))
         self.record2 = Record(name = 'name2', phone = ['+380931112233', '380671111111'], address = ['add2'], mail = ['ex2@mail', 'ssssadasd@mail.gg'], birthday = Birthday('03.09.2000'))
         self.contact_list = ContactList('test_list')
@@ -404,24 +439,29 @@ class TestContactList(unittest.TestCase):
         self.contact_list.add_contact(self.record2)
         
     def test_init(self):
+        '''test func'''
         self.assertEqual(self.contact_list.name, 'test_list')
         
     def test_add_contact(self):
+        '''test func'''
         self.contact_list.add_contact(self.record1)
         self.assertEqual(self.contact_list.data[self.record1.name], self.record1)
         
     def test_find_value(self):
+        '''test func'''
         self.assertTrue(self.contact_list.find('name2'))
         self.assertTrue(self.contact_list.find('9311'))
         self.assertTrue(self.contact_list.find('dasd@mail'))
         self.assertFalse(self.contact_list.find('name3'))
         
     def test_check_birthday(self):
+        '''test func'''
         self.assertTrue(self.contact_list.birthdays('0', '10'))
         self.assertFalse(self.contact_list.birthdays('7', '10'))
 
     @patch('builtins.input', side_effect = ['name2', 'new_name'])
     def test_change_name(self, mock_input):
+        '''test func'''
         self.contact_list.change_name()
         self.assertEqual(self.contact_list['new_name']['phone'], self.record2['phone'])
         self.assertEqual(self.contact_list['new_name']['mail'], self.record2['mail'])
